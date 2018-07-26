@@ -2,14 +2,15 @@
 //  APIRequest.swift
 //  Task1
 //
-//  Created by Nour Abukhaled on 7/25/18.
+//  Created by Nour Abukhaled on 7/26/18.
 //  Copyright © 2018 Nour Abukhaled. All rights reserved.
+//
 
 import UIKit
 
 protocol APIRequest {
-
-    var methodName: String { get  }
+    
+    var methodName: String { get }
     
     var baseUrl: String { get }
     
@@ -17,8 +18,8 @@ protocol APIRequest {
     
     var headers: [String: String] { get }
     
-    func object(from Json: [String: Any]) -> [locations]
-
+    func object(from json: [String: Any]) -> [locations]
+    
 }
 
 extension APIRequest {
@@ -28,10 +29,9 @@ extension APIRequest {
         return "https://sms.hbtf.com.jo/HBTFmbank/MobServiceWs.aspx?SrvID="
     }
     
-   var headers: [String: String] {
-    
-       return ["User-Agent":"IOS"]
-    
+    var headers: [String: String] {
+        
+        return ["User-Agent":"IOS"]
     }
     
 }

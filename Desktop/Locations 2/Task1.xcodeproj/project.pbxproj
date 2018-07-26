@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		193FE1E521085A690065A1E7 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1E421085A690065A1E7 /* APIRequest.swift */; };
-		193FE1E921086D420065A1E7 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1E821086D420065A1E7 /* APIClient.swift */; };
-		193FE1EB21088A1E0065A1E7 /* LocatorRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1EA21088A1E0065A1E7 /* LocatorRequest.swift */; };
+		193FE1F22109C5910065A1E7 /* APIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1F12109C5910065A1E7 /* APIRequest.swift */; };
+		193FE1F42109C7B40065A1E7 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1F32109C7B40065A1E7 /* APIClient.swift */; };
+		193FE1F62109CF9F0065A1E7 /* ATMRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1F52109CF9F0065A1E7 /* ATMRequest.swift */; };
+		193FE1F82109FE320065A1E7 /* BranchRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 193FE1F72109FE320065A1E7 /* BranchRequest.swift */; };
 		36099C59207DED8600BD84ED /* JsonResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36099C58207DED8600BD84ED /* JsonResponse.swift */; };
 		3632775F20499D7000E52782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3632775E20499D7000E52782 /* AppDelegate.swift */; };
 		3632776120499D7000E52782 /* locatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3632776020499D7000E52782 /* locatorViewController.swift */; };
@@ -25,9 +26,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		193FE1E421085A690065A1E7 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
-		193FE1E821086D420065A1E7 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
-		193FE1EA21088A1E0065A1E7 /* LocatorRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocatorRequest.swift; sourceTree = "<group>"; };
+		193FE1F12109C5910065A1E7 /* APIRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRequest.swift; sourceTree = "<group>"; };
+		193FE1F32109C7B40065A1E7 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
+		193FE1F52109CF9F0065A1E7 /* ATMRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATMRequest.swift; sourceTree = "<group>"; };
+		193FE1F72109FE320065A1E7 /* BranchRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchRequest.swift; sourceTree = "<group>"; };
 		36099C58207DED8600BD84ED /* JsonResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JsonResponse.swift; sourceTree = "<group>"; };
 		3632775B20499D7000E52782 /* Task1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Task1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3632775E20499D7000E52782 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -60,6 +62,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		193FE1EC2109C4B80065A1E7 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				193FE1ED2109C4DA0065A1E7 /* APIRequest */,
+				193FE1EE2109C4FE0065A1E7 /* APIClient */,
+				193FE1EF2109C5140065A1E7 /* Requests */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		193FE1ED2109C4DA0065A1E7 /* APIRequest */ = {
+			isa = PBXGroup;
+			children = (
+				193FE1F12109C5910065A1E7 /* APIRequest.swift */,
+			);
+			path = APIRequest;
+			sourceTree = "<group>";
+		};
+		193FE1EE2109C4FE0065A1E7 /* APIClient */ = {
+			isa = PBXGroup;
+			children = (
+				193FE1F32109C7B40065A1E7 /* APIClient.swift */,
+			);
+			path = APIClient;
+			sourceTree = "<group>";
+		};
+		193FE1EF2109C5140065A1E7 /* Requests */ = {
+			isa = PBXGroup;
+			children = (
+				193FE1F02109C53E0065A1E7 /* Locator */,
+			);
+			path = Requests;
+			sourceTree = "<group>";
+		};
+		193FE1F02109C53E0065A1E7 /* Locator */ = {
+			isa = PBXGroup;
+			children = (
+				193FE1F52109CF9F0065A1E7 /* ATMRequest.swift */,
+				193FE1F72109FE320065A1E7 /* BranchRequest.swift */,
+			);
+			path = Locator;
+			sourceTree = "<group>";
+		};
 		3632775220499D7000E52782 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +128,7 @@
 			children = (
 				36C5D5C22091E61F004461B7 /* Task1.entitlements */,
 				36C5D5BC2084B01C004461B7 /* Models */,
+				193FE1EC2109C4B80065A1E7 /* Networking */,
 				36C5D5BB2084AFFF004461B7 /* Other */,
 				36C5D5BA2084AF92004461B7 /* Controllers */,
 				36C5D5BD2084B058004461B7 /* Layouts */,
@@ -115,10 +161,7 @@
 			children = (
 				363277722049D29500E52782 /* locations.swift */,
 				36099C58207DED8600BD84ED /* JsonResponse.swift */,
-				193FE1E421085A690065A1E7 /* APIRequest.swift */,
 				36F1D15B20623F54002A348E /* LocatorCell.swift */,
-				193FE1E821086D420065A1E7 /* APIClient.swift */,
-				193FE1EA21088A1E0065A1E7 /* LocatorRequest.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -305,14 +348,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				193FE1EB21088A1E0065A1E7 /* LocatorRequest.swift in Sources */,
 				3632776120499D7000E52782 /* locatorViewController.swift in Sources */,
-				193FE1E521085A690065A1E7 /* APIRequest.swift in Sources */,
+				193FE1F62109CF9F0065A1E7 /* ATMRequest.swift in Sources */,
+				193FE1F82109FE320065A1E7 /* BranchRequest.swift in Sources */,
 				36099C59207DED8600BD84ED /* JsonResponse.swift in Sources */,
-				193FE1E921086D420065A1E7 /* APIClient.swift in Sources */,
+				193FE1F42109C7B40065A1E7 /* APIClient.swift in Sources */,
 				36EE471F2057DC0800BB1368 /* detailesViewController.swift in Sources */,
 				363277732049D29500E52782 /* locations.swift in Sources */,
 				36F1D15C20623F54002A348E /* LocatorCell.swift in Sources */,
+				193FE1F22109C5910065A1E7 /* APIRequest.swift in Sources */,
 				3632775F20499D7000E52782 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

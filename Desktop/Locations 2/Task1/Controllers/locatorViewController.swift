@@ -107,14 +107,14 @@ class locatorViewController: UIViewController,UITableViewDataSource,UITableViewD
     }
     
     
-    func getBranches() {
-        let request = ATMRequest(latitude: 35, longtude: 32)
-        APIClient.execute(request: request, success: { locations in
-            
-        }) { (errorMessage) in
-            
-        }
-    }
+//    func getBranches() {
+//        let request = ATMRequest()
+//        APIClient.execute(request: request, success: { locations in
+//
+//        }) { (errorMessage) in
+//
+//        }
+//    }
     
 //    func requestLogin() {
 //        let loginRequest = LoginRequest(username: "anas", password: "1245")
