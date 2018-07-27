@@ -276,7 +276,7 @@ extension locatorViewController {
             
         case 0:
             
-            if isSearching{
+            if isSearching {
                 
                 return "Branches"
             }else{
@@ -350,7 +350,7 @@ extension locatorViewController {
                 view.endEditing(true)
                 locationsTableView.reloadData()
                 
-            }else{
+            } else {
                 
                 isSearching = true
                 getFilteredDataArray(searchText: searchText)
