@@ -7,37 +7,46 @@
 //
 
 import UIKit
-import Foundation
 import Alamofire
 
 enum locationType: Int {
+    
     case cashOut
     case branches
 }
 
-class locatorViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate
-{
+class locatorViewController: UIViewController {
+
+   
+    //    MARK: Outlets
     
     @IBOutlet var locationTypeSegmentController: UISegmentedControl!
     @IBOutlet var locationsTableView: UITableView!
-    
     @IBOutlet weak var searchBar: UISearchBar!
-    var filteredDataArray = [locations]()
-    var isSearching = false
     
+    //    MARK: Variables
+    
+    var filteredDataArray = [locations]()
+    
+    var isSearching = false
 
     var selecedLocation : locations? = nil
     
     var cashOutsArray: [locations] = []
+    
     var branchesArray: [locations] = []
+    
     var notificationArray: [locations] = []
 
     var selectedLocationType: locationType = locationType.cashOut
+    
     var tableViewDataSourceArray: [locations] = []
     
     var jsonResponse = JsonResponse()
     
     var id: String = ""
+    
+    //    MARK: View LifeCycle
     
     override func viewDidLoad() {
         
@@ -122,85 +131,6 @@ class locatorViewController: UIViewController,UITableViewDataSource,UITableViewD
 //    }
     
     
-    
-    @objc func showCashoutDetailesViewController(notification: NSNotification){
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-
-        let detaileViewController = storyboard.instantiateViewController(withIdentifier: "secondController") as! detailesViewController
-        
-        
-        let branchId = notification.userInfo?["BranchID"] as? String ?? ""
-        let ATMId = notification.userInfo?["ATMID"] as? String ?? ""
-        
-        if ATMId == "" {
-            
-            notificationArray = branchesArray
-            id = branchId
-            
-        }else{
-            
-            notificationArray = cashOutsArray
-            id = ATMId
-            
-        }
-        
-        for notificationLocation in notificationArray {
-            
-            if notificationLocation.ID == id {
-                
-                detaileViewController.latitude = (notificationLocation.LocX)
-                detaileViewController.longitude = (notificationLocation.LocY)
-                detaileViewController.titleName = (notificationLocation.title)
-                
-                navigationController?.pushViewController(detaileViewController, animated: true)
-                
-                break
-            }
-        }
-    }
-    
-    func requestCashouts() {
-        
-        if cashOutsArray == [] {
-        
-        jsonResponse.getCashOutsJson { (locations) in
-            self.cashOutsArray = locations
-            self.tableViewDataSourceArray = locations
-            self.locationsTableView.reloadData()
-        }
-        
-        } else {
-            self.tableViewDataSourceArray = cashOutsArray
-            self.locationsTableView.reloadData()
-        }
-
-    }
-    
-    func requestBranches() {
-        
-        if branchesArray == [] {
-            
-            jsonResponse.getBranchesJson { (locations) in
-                self.branchesArray = locations
-                self.tableViewDataSourceArray = locations
-                self.locationsTableView.reloadData()
-            }
-            
-        } else {
-            self.tableViewDataSourceArray = branchesArray
-            self.locationsTableView.reloadData()
-        }
-        
-    }
-    
-    override func didReceiveMemoryWarning() {
-        
-        super.didReceiveMemoryWarning()
-        
-    }
-    
-    
     @IBAction func segmentedControlActionChanged(_ sender: Any) {
         
         
@@ -237,90 +167,82 @@ class locatorViewController: UIViewController,UITableViewDataSource,UITableViewD
         locationsTableView.reloadData()
         
     }
+}
+
+//MARK: - Actions
+
+extension locatorViewController {
     
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    
+    @objc func showCashoutDetailesViewController(notification: NSNotification) {
         
-        if tableViewDataSourceArray.isEmpty {
-            return 0
-        } else {
-            return  isSearching ? 1:2
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let detaileViewController = storyboard.instantiateViewController(withIdentifier: "secondController") as! detailesViewController
+        
+        
+        let branchId = notification.userInfo?["BranchID"] as? String ?? ""
+        let ATMId = notification.userInfo?["ATMID"] as? String ?? ""
+        
+        if ATMId == "" {
+            
+            notificationArray = branchesArray
+            id = branchId
+            
+        }else{
+            
+            notificationArray = cashOutsArray
+            id = ATMId
             
         }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        if isSearching {
+        for notificationLocation in notificationArray {
             
-            return filteredDataArray.count
-            
-        }else {
-            
-            switch section {
-            case 0:
-                return 2
-            case 1:
-                return tableViewDataSourceArray.count - 2
-            default:
-                return 0
-            
+            if notificationLocation.ID == id {
+                
+                detaileViewController.latitude = (notificationLocation.LocX)
+                detaileViewController.longitude = (notificationLocation.LocY)
+                detaileViewController.titleName = (notificationLocation.title)
+                
+                navigationController?.pushViewController(detaileViewController, animated: true)
+                
+                break
             }
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func requestCashouts() {
         
-        
-        guard let locationCell = tableView.dequeueReusableCell(withIdentifier: "LocatorCell", for: indexPath) as? LocatorCell
-            else {
-                return UITableViewCell()
+        if cashOutsArray == [] {
+            
+            jsonResponse.getCashOutsJson { (locations) in
+                self.cashOutsArray = locations
+                self.tableViewDataSourceArray = locations
+                self.locationsTableView.reloadData()
+            }
+            
+        } else {
+            self.tableViewDataSourceArray = cashOutsArray
+            self.locationsTableView.reloadData()
         }
-        
-        var location : locations
-        
-        if indexPath.section == 0 && isSearching == false {
-            
-            location = tableViewDataSourceArray[indexPath.row]
-            locationCell.navigateButton.tag = indexPath.row
-            
-        }else if indexPath.section == 1 && isSearching == false {
-            
-            location = tableViewDataSourceArray[indexPath.row + 2]
-            locationCell.navigateButton.tag = indexPath.row + 2
-            
-        }else {
-            
-            location = filteredDataArray[indexPath.row]
-        }
-        
-        locationCell.titleLabel.text =  location.title
-        
-        locationCell.descriptionLabel.text = location.desrp
-        
-        locationCell.navigateButton.addTarget(self, action: #selector(startNavigation(_:)), for: .touchUpInside)
-        
-        return locationCell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        locationsTableView.estimatedRowHeight = 80
-        return UITableViewAutomaticDimension
         
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func requestBranches() {
         
-        if selectedLocationType == locationType.cashOut {
+        if branchesArray == [] {
             
-            return self.getCashoutSectionHeader(section: section )
+            jsonResponse.getBranchesJson { (locations) in
+                self.branchesArray = locations
+                self.tableViewDataSourceArray = locations
+                self.locationsTableView.reloadData()
+            }
             
-        }else if selectedLocationType == locationType.branches {
-            
-            return  self.getBranchesSectionHeader(section: section)
+        } else {
+            self.tableViewDataSourceArray = branchesArray
+            self.locationsTableView.reloadData()
         }
-            
-        else { return "" }
+        
     }
     
     func getCashoutSectionHeader(section: Int) -> String {
@@ -371,86 +293,17 @@ class locatorViewController: UIViewController,UITableViewDataSource,UITableViewD
         }
     }
     
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view:UIView, forSection: Int) {
-        
-        if let headerTitle = view as? UITableViewHeaderFooterView {
-            
-            headerTitle.textLabel?.textColor = UIColor.lightGray
-            headerTitle.textLabel?.font = UIFont(name: "Futura", size: 14)
-            locationsTableView.tableFooterView = UIView()
-            
-        }
-        
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
-        if indexPath.section == 0 {
-            
-            self.selecedLocation = self.tableViewDataSourceArray[indexPath.row]
-            
-        }else{
-            
-            self.selecedLocation = self.tableViewDataSourceArray[indexPath.row + 2]
-            
-        }
-        
-        if isSearching {
-            self.selecedLocation = self.filteredDataArray[indexPath.row]
-            searchBar.text = nil
-            isSearching = false
-           
-            
-        }
-        
-        self.performSegue(withIdentifier: "DetailesSegue", sender: nil)
-        
-        locationsTableView.reloadData()
-        
-        view.endEditing(true)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        if segue.identifier == "DetailesSegue" {
-            
-            let detailViewController = segue.destination as! detailesViewController
-            detailViewController.latitude = (selecedLocation?.LocX)!
-            detailViewController.longitude = (selecedLocation?.LocY)!
-            detailViewController.titleName = (selecedLocation?.title)!
-            
-        }
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-        
-        if searchBar.text == nil || searchBar.text == "" {
-            
-            isSearching = false
-            view.endEditing(true)
-            locationsTableView.reloadData()
-            
-        }else{
-            
-            isSearching = true
-            getFilteredDataArray(searchText: searchText)
-            locationsTableView.reloadData()
-            
-        }
-    }
-    
-    func getFilteredDataArray(searchText: String){
+    func getFilteredDataArray(searchText: String) {
         
         filteredDataArray = tableViewDataSourceArray.filter({
+            
             $0.title.prefix(searchText.count) == searchText.prefix(searchText.count)
-
+            
         })
         
     }
     
-    @objc func startNavigation(_ sender: UIButton){
+    @objc func startNavigation(_ sender: UIButton) {
         
         
         let buttonInbox = sender.tag
@@ -469,5 +322,187 @@ class locatorViewController: UIViewController,UITableViewDataSource,UITableViewD
             
         }
     }
-}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "DetailesSegue" {
+            
+            let detailViewController = segue.destination as! detailesViewController
+            detailViewController.latitude = (selecedLocation?.LocX)!
+            detailViewController.longitude = (selecedLocation?.LocY)!
+            detailViewController.titleName = (selecedLocation?.title)!
+            
+          }
+      }
+    
+   }
 
+//MARK: - UISearchBarDelegate
+
+    extension locatorViewController: UISearchBarDelegate {
+    
+        func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+            
+            
+            if searchBar.text == nil || searchBar.text == "" {
+                
+                isSearching = false
+                view.endEditing(true)
+                locationsTableView.reloadData()
+                
+            }else{
+                
+                isSearching = true
+                getFilteredDataArray(searchText: searchText)
+                locationsTableView.reloadData()
+                
+            }
+        }
+    
+    }
+
+//MARK: - UITableViewDataSource
+    
+    extension locatorViewController: UITableViewDataSource {
+        
+        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            
+            guard let locationCell = tableView.dequeueReusableCell(withIdentifier: "LocatorCell", for: indexPath) as? LocatorCell
+                else {
+                    return UITableViewCell()
+            }
+            
+            var location : locations
+            
+            if indexPath.section == 0 && isSearching == false {
+                
+                location = tableViewDataSourceArray[indexPath.row]
+                locationCell.navigateButton.tag = indexPath.row
+                
+            }else if indexPath.section == 1 && isSearching == false {
+                
+                location = tableViewDataSourceArray[indexPath.row + 2]
+                locationCell.navigateButton.tag = indexPath.row + 2
+                
+            }else {
+                
+                location = filteredDataArray[indexPath.row]
+            }
+            
+            locationCell.titleLabel.text =  location.title
+            
+            locationCell.descriptionLabel.text = location.desrp
+            
+            locationCell.navigateButton.addTarget(self, action: #selector(startNavigation(_:)), for: .touchUpInside)
+            
+            return locationCell
+        }
+        
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            
+            if isSearching {
+                
+                return filteredDataArray.count
+                
+            } else {
+                
+                switch section {
+                    
+                case 0:
+                    return 2
+                    
+                case 1:
+                    return tableViewDataSourceArray.count - 2
+                    
+                default:
+                    return 0
+                    
+                }
+            }
+        }
+        
+        public func numberOfSections(in tableView: UITableView) -> Int {
+            
+            if tableViewDataSourceArray.isEmpty {
+                
+                return 0
+                
+            } else {
+                
+                return  isSearching ? 1:2
+                
+            }
+        }
+        
+        func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+            
+            if selectedLocationType == locationType.cashOut {
+                
+                return self.getCashoutSectionHeader(section: section )
+                
+            }else if selectedLocationType == locationType.branches {
+                
+                return  self.getBranchesSectionHeader(section: section)
+            }
+                
+            else { return "" }
+        }
+        
+    }
+
+//MARK: - UITableViewDelegate
+
+   extension locatorViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
+        if indexPath.section == 0 {
+            
+            self.selecedLocation = self.tableViewDataSourceArray[indexPath.row]
+            
+        }else{
+            
+            self.selecedLocation = self.tableViewDataSourceArray[indexPath.row + 2]
+            
+        }
+        
+        if isSearching {
+            self.selecedLocation = self.filteredDataArray[indexPath.row]
+            searchBar.text = nil
+            isSearching = false
+            
+            
+        }
+        
+        self.performSegue(withIdentifier: "DetailesSegue", sender: nil)
+        
+        locationsTableView.reloadData()
+        
+        view.endEditing(true)
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplayHeaderView view:UIView, forSection: Int) {
+        
+        if let headerTitle = view as? UITableViewHeaderFooterView {
+            
+            headerTitle.textLabel?.textColor = UIColor.lightGray
+            
+            headerTitle.textLabel?.font = UIFont(name: "Futura", size: 14)
+            
+            locationsTableView.tableFooterView = UIView()
+            
+        }
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        locationsTableView.estimatedRowHeight = 80
+        
+        return UITableViewAutomaticDimension
+        
+    }
+    
+    
+}

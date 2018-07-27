@@ -11,7 +11,7 @@ import Alamofire
 
 class APIClient {
     
-    func execute(request: APIRequest,
+    static func execute(request: APIRequest,
                  success: @escaping ([locations]) -> Void,
                  failure: @escaping (String) -> Void ) {
         
