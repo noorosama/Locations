@@ -26,7 +26,8 @@ extension APIRequest {
     
     var baseUrl: String {
         
-        return "https://sms.hbtf.com.jo/HBTFmbank/MobServiceWs.aspx?SrvID="
+        return ""
+        
     }
     
     var headers: [String: String] {
